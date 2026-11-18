@@ -188,6 +188,38 @@
     html { scroll-behavior: auto; }
   }
 
+  /* Countdown */
+  .countdown { position: relative; overflow: hidden; background: var(--ink); color: var(--cream); }
+  .countdown::before { content: ""; position: absolute; inset: -60% -10%; pointer-events: none;
+    background: radial-gradient(40% 70% at 18% 50%, rgba(243, 111, 33, .32), transparent 70%),
+                radial-gradient(35% 60% at 85% 40%, rgba(255, 209, 102, .16), transparent 70%); }
+  .countdown .wrap { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 30px; padding: 14px 0; }
+  .cd-title { display: flex; align-items: center; gap: 12px; font-family: var(--serif); font-size: 19px; letter-spacing: -0.01em; }
+  .cd-title em { color: var(--honey); font-weight: 600; }
+  .cd-pulse { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--orange); flex: none; }
+  .cd-pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--orange); animation: cdPulse 2s ease-out infinite; }
+  @keyframes cdPulse { from { transform: scale(1); opacity: .7; } to { transform: scale(3.2); opacity: 0; } }
+  .cd-clock { display: flex; align-items: flex-start; gap: 6px; }
+  .cd-unit { display: grid; justify-items: center; gap: 5px; }
+  .cd-num { display: block; width: 54px; padding: 9px 0 8px; text-align: center; font-family: var(--serif); font-size: 26px; font-weight: 600; line-height: 1;
+    font-variant-numeric: tabular-nums; background: rgba(250, 244, 234, .08); border: 1px solid rgba(250, 244, 234, .14); border-radius: 12px; }
+  .cd-unit:last-child .cd-num { color: var(--honey); }
+  .cd-num.tick { animation: cdTick .45s ease; }
+  @keyframes cdTick { from { transform: translateY(-5px); opacity: .25; } to { transform: none; opacity: 1; } }
+  .cd-lab { font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(250, 244, 234, .6); }
+  .cd-sep { font-family: var(--serif); font-size: 22px; line-height: 1; padding-top: 10px; color: rgba(250, 244, 234, .35); }
+  .cd-go { display: none; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 999px; background: var(--orange); color: #fff; font-weight: 600; font-size: 15px; text-decoration: none; }
+  .countdown.live .cd-clock { display: none; }
+  .countdown.live .cd-go { display: inline-flex; }
+  @media (max-width: 560px) {
+    .countdown .wrap { gap: 10px; padding: 12px 0 14px; }
+    .cd-title { font-size: 16px; }
+    .cd-num { width: 48px; font-size: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cd-pulse::after, .cd-num.tick { animation: none; }
+  }
+
   /* Responsive */
   @media (max-width: 1020px) {
     .grid { grid-template-columns: repeat(2, 1fr); }
@@ -228,6 +260,22 @@
 </head>
 <body>
 
+<div class="countdown" id="countdown" role="timer" aria-label="Countdown to the all-new WeekEats, arriving December 10, 2026">
+  <div class="wrap">
+    <p class="cd-title"><i class="cd-pulse" aria-hidden="true"></i><span>The all-new WeekEats arrives <em>December&nbsp;10</em></span></p>
+    <div class="cd-clock" aria-hidden="true">
+      <div class="cd-unit"><span class="cd-num" data-unit="d">--</span><span class="cd-lab">days</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" data-unit="h">--</span><span class="cd-lab">hours</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" data-unit="m">--</span><span class="cd-lab">min</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><span class="cd-num" data-unit="s">--</span><span class="cd-lab">sec</span></div>
+    </div>
+    <a class="cd-go" href="https://apps.apple.com/app/id6448211124">Update now <span aria-hidden="true">→</span></a>
+  </div>
+</div>
+
 <nav id="nav">
   <div class="wrap">
     <a class="brand" href="#top"><img src="assets/icon.png" alt="">WeekEats</a>
@@ -243,7 +291,7 @@
 <header class="hero" id="top">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="pill reveal"><b>DEC 10</b><span>The all-new WeekEats arrives <time datetime="2026-12-10">December&nbsp;10</time></span></span>
+      <span class="pill reveal"><b>NEW</b><span>The all-new WeekEats, rebuilt from scratch</span></span>
       <h1 class="reveal">Your whole week of meals, planned in <em>minutes.</em></h1>
       <p class="lede reveal">Write the dishes you always cook. WeekEats spreads them across your week, finds every ingredient, adds a photo and writes your shopping list. Then share it all with the people you cook with.</p>
       <div class="cta-row reveal">
@@ -485,6 +533,38 @@
 </footer>
 
 <script>
+  // Countdown to launch: midnight in Spain, 10 Dec 2026
+  const cd = document.getElementById('countdown');
+  const launch = Date.parse('2026-12-10T00:00:00+01:00');
+  const cells = {};
+  cd.querySelectorAll('.cd-num').forEach((el) => { cells[el.dataset.unit] = el; });
+  let cdTimer;
+  const setCell = (unit, value) => {
+    const el = cells[unit];
+    const text = String(value).padStart(2, '0');
+    if (el.textContent === text) return;
+    el.textContent = text;
+    el.classList.remove('tick');
+    void el.offsetWidth;
+    el.classList.add('tick');
+  };
+  const tickCountdown = () => {
+    const left = launch - Date.now();
+    if (left <= 0) {
+      cd.classList.add('live');
+      cd.querySelector('.cd-title span').innerHTML = 'The all-new WeekEats <em>is here</em>';
+      clearInterval(cdTimer);
+      return;
+    }
+    const sec = Math.floor(left / 1000);
+    setCell('d', Math.floor(sec / 86400));
+    setCell('h', Math.floor(sec / 3600) % 24);
+    setCell('m', Math.floor(sec / 60) % 60);
+    setCell('s', sec % 60);
+  };
+  tickCountdown();
+  cdTimer = setInterval(tickCountdown, 1000);
+
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
   window.addEventListener('scroll', onScroll, { passive: true });
