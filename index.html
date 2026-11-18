@@ -94,8 +94,11 @@
   .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; }
   .hero-copy { display: grid; gap: 26px; }
   .pill { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px 7px 8px; font-size: 14px; font-weight: 500; }
-  .pill b { background: var(--orange); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: 12px; letter-spacing: .04em; }
+  .pill b { white-space: nowrap; flex-shrink: 0; background: var(--orange); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: 12px; letter-spacing: .04em; }
   .hero h1 em { font-style: italic; color: var(--orange); font-weight: 600; }
+  .launch-note { font-size: 15px; color: var(--ink-soft); }
+  .launch-note strong { color: var(--ink); font-weight: 600; }
+  .final .pill { justify-self: center; }
   .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
   .meals { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--ink-soft); }
   .meals span { display: inline-flex; align-items: center; gap: 7px; }
@@ -240,7 +243,7 @@
 <header class="hero" id="top">
   <div class="wrap">
     <div class="hero-copy">
-      <span class="pill reveal"><b>NEW</b> The all-new WeekEats, rebuilt from scratch</span>
+      <span class="pill reveal"><b>DEC 10</b><span>The all-new WeekEats arrives <time datetime="2026-12-10">December&nbsp;10</time></span></span>
       <h1 class="reveal">Your whole week of meals, planned in <em>minutes.</em></h1>
       <p class="lede reveal">Write the dishes you always cook. WeekEats spreads them across your week, finds every ingredient, adds a photo and writes your shopping list. Then share it all with the people you cook with.</p>
       <div class="cta-row reveal">
@@ -250,6 +253,7 @@
         </a>
         <a class="link" href="#new">See everything that's new</a>
       </div>
+      <p class="launch-note reveal">WeekEats is already on the App Store. The new version lands as an update on <strong><time datetime="2026-12-10">December 10, 2026</time></strong>.</p>
       <div class="meals reveal">
         <span><i class="dot" style="background:var(--honey)"></i>Breakfast</span>
         <span><i class="dot" style="background:var(--sage)"></i>Lunch</span>
@@ -411,7 +415,7 @@
 <section class="new" id="new">
   <div class="wrap">
     <div class="new-head">
-      <span class="eyebrow reveal"><i class="dot" style="background:var(--orange)"></i>What's new</span>
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--orange)"></i>What's new · Arriving December 10</span>
       <h2 class="reveal">Rebuilt from the ground up.</h2>
       <p class="lede reveal">This isn't an update, it's a new WeekEats: new design, new engine and new ways to plan with the people you live with.</p>
     </div>
@@ -465,6 +469,7 @@
     <img class="icon reveal" src="assets/icon.png" alt="WeekEats app icon">
     <h2 class="reveal">Stop asking “what's for dinner?”</h2>
     <p class="lede reveal">Plan your week once, shop once, and enjoy it together.</p>
+    <span class="pill reveal"><b>DEC 10</b><span>The new WeekEats arrives <time datetime="2026-12-10">December&nbsp;10,&nbsp;2026</time></span></span>
     <a class="btn reveal" href="https://apps.apple.com/app/id6448211124">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1Zm-7 15a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
       Download on the App Store
