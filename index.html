@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeekEats — Plan your week of meals in minutes</title>
+<meta name="description" content="The all-new WeekEats: plan your week of meals in a couple of taps, get a shopping list that writes itself, and share it all with the people you cook with.">
+<meta property="og:title" content="WeekEats — Plan your week of meals in minutes">
+<meta property="og:description" content="Plan your week in a couple of taps, get a shopping list that writes itself, and share it with the people you cook with.">
+<meta property="og:image" content="assets/01-week-day.jpg">
+<meta name="theme-color" content="#FAF4EA">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF4EA;
+    --cream-deep: #F3E9D8;
+    --paper: #FFFFFF;
+    --ink: #2A1A12;
+    --ink-soft: #6B5446;
+    --orange: #F36F21;
+    --orange-deep: #D85A12;
+    --honey: #FFD166;
+    --sage: #B7D9A8;
+    --terracotta: #F4A38A;
+    --plum: #CDB9E8;
+    --line: rgba(42, 26, 18, .10);
+    --shadow: 0 30px 60px -20px rgba(70, 40, 20, .28), 0 12px 24px -12px rgba(70, 40, 20, .18);
+    --serif: "Fraunces", "New York", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  .wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; margin: 0; }
+  h1 { font-size: clamp(44px, 6.4vw, 84px); }
+  h2 { font-size: clamp(34px, 4.4vw, 56px); }
+  h3 { font-size: 24px; letter-spacing: -0.01em; line-height: 1.2; }
+  p { margin: 0; }
+  .lede { font-size: clamp(18px, 1.6vw, 21px); color: var(--ink-soft); max-width: 34em; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+
+  /* Nav */
+  nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--cream) 82%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color .3s; }
+  nav.scrolled { border-bottom-color: var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--serif); font-weight: 600; font-size: 22px; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+  .nav-links { display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); }
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    background: var(--orange); color: #fff; font-weight: 600; font-size: 16px;
+    padding: 15px 26px; border-radius: 999px; transition: transform .15s, background .15s;
+    box-shadow: 0 10px 24px -10px rgba(243, 111, 33, .7);
+  }
+  .btn:hover { background: var(--orange-deep); transform: translateY(-1px); }
+  .btn.small { padding: 10px 18px; font-size: 14px; box-shadow: none; }
+  .btn svg { width: 18px; height: 18px; }
+  .link { font-weight: 600; text-decoration: none; color: var(--ink); border-bottom: 2px solid var(--honey); padding-bottom: 2px; }
+
+  /* Phones */
+  .phone {
+    position: relative; background: #1E1612; padding: 9px; border-radius: 46px;
+    box-shadow: var(--shadow), inset 0 0 0 1.5px #3a2c24;
+    aspect-ratio: 1206 / 2622; width: 100%;
+  }
+  .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 38px; }
+
+  /* Hero */
+  .hero { padding: 56px 0 40px; position: relative; }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: center; }
+  .hero-copy { display: grid; gap: 26px; }
+  .pill { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px 7px 8px; font-size: 14px; font-weight: 500; }
+  .pill b { background: var(--orange); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: 12px; letter-spacing: .04em; }
+  .hero h1 em { font-style: italic; color: var(--orange); font-weight: 600; }
+  .cta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+  .meals { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--ink-soft); }
+  .meals span { display: inline-flex; align-items: center; gap: 7px; }
+
+  .stage { position: relative; height: 640px; }
+  .stage .blob { position: absolute; inset: 40px 0 20px 30px; background: radial-gradient(closest-side, var(--honey) 0%, rgba(255,209,102,0) 70%); opacity: .55; filter: blur(10px); }
+  .stage .phone { position: absolute; width: 270px; }
+  .stage .p-main { left: 50%; top: 10px; transform: translateX(-50%); z-index: 3; }
+  .stage .p-left { left: 2%; top: 90px; transform: rotate(-8deg); width: 230px; z-index: 2; opacity: .97; }
+  .stage .p-right { right: 0; top: 110px; transform: rotate(8deg); width: 230px; z-index: 1; opacity: .97; }
+  .chip {
+    position: absolute; z-index: 5; display: flex; align-items: center; gap: 10px;
+    background: var(--paper); border-radius: 18px; padding: 11px 15px; font-size: 14px; font-weight: 600;
+    box-shadow: 0 16px 32px -14px rgba(70, 40, 20, .35); white-space: nowrap;
+  }
+  .chip small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 12px; }
+  .chip .ic { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+  .chip .ic svg { width: 18px; height: 18px; }
+  .c1 { left: -4%; top: 40px; animation: bob 6s ease-in-out infinite; }
+  .c2 { right: -2%; top: 30px; animation: bob 7s ease-in-out -2s infinite; }
+  .c3 { left: 4%; bottom: 40px; animation: bob 6.5s ease-in-out -4s infinite; }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+
+  /* Steps */
+  .steps { padding: 70px 0 30px; }
+  .steps-head { display: grid; gap: 14px; margin-bottom: 40px; max-width: 760px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .step { background: var(--paper); border-radius: 28px; padding: 30px 28px 32px; display: grid; gap: 12px; align-content: start; position: relative; overflow: hidden; }
+  .step .num { font-family: var(--serif); font-size: 64px; line-height: 1; font-weight: 600; color: var(--orange); }
+  .step p { color: var(--ink-soft); }
+  .step .bar { position: absolute; left: 0; right: 0; top: 0; height: 6px; }
+
+  /* Feature rows */
+  section.feature { padding: 90px 0; }
+  .feature .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .feature.flip .copy { order: 2; }
+  .copy { display: grid; gap: 22px; }
+  .points { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 14px; }
+  .points li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; color: var(--ink-soft); }
+  .points li b { color: var(--ink); font-weight: 600; }
+  .tick { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); }
+  .tick svg { width: 14px; height: 14px; }
+  .duo { display: flex; justify-content: center; gap: 22px; align-items: flex-start; }
+  .duo .phone { width: 260px; }
+  .duo .phone:nth-child(2) { margin-top: 70px; }
+  .solo { display: flex; justify-content: center; }
+  .solo .phone { width: 290px; }
+
+  /* Share band */
+  .band { background: var(--ink); color: var(--cream); border-radius: 44px; margin: 30px auto; padding: 84px 0; width: min(1240px, 100% - 24px); position: relative; overflow: hidden; }
+  .band .lede, .band .points li { color: rgba(250, 244, 234, .72); }
+  .band .points li b { color: var(--cream); }
+  .band .tick { background: rgba(250, 244, 234, .1); }
+  .band .eyebrow { color: rgba(250, 244, 234, .65); }
+  .band h2 em { font-style: italic; color: var(--honey); }
+  .band .glow { position: absolute; width: 520px; height: 520px; right: -120px; top: -120px; background: radial-gradient(closest-side, rgba(243,111,33,.45), rgba(243,111,33,0)); }
+  .faces { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
+  .faces .av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; border: 3px solid var(--ink); margin-left: -14px; }
+  .faces .av:first-child { margin-left: 0; }
+  .faces span { font-size: 15px; color: rgba(250, 244, 234, .72); }
+
+  /* What's new */
+  .new { padding: 100px 0 60px; }
+  .new-head { display: grid; gap: 14px; max-width: 720px; margin-bottom: 44px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .card { background: var(--paper); border-radius: 26px; padding: 26px 24px 28px; display: grid; gap: 10px; align-content: start; }
+  .card .ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 6px; }
+  .card .ic svg { width: 22px; height: 22px; }
+  .card h3 { font-size: 20px; }
+  .card p { color: var(--ink-soft); font-size: 15px; }
+
+  /* Final CTA */
+  .final { padding: 60px 0 110px; text-align: center; }
+  .final .wrap { display: grid; justify-items: center; gap: 24px; }
+  .final img.icon { width: 104px; height: 104px; border-radius: 24px; box-shadow: var(--shadow); }
+  .final .lede { text-align: center; }
+
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14px; color: var(--ink-soft); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .chip { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* Responsive */
+  @media (max-width: 1020px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .stage .p-left, .stage .p-right { width: 200px; }
+    .stage .phone.p-main { width: 250px; }
+  }
+  @media (max-width: 880px) {
+    .hero .wrap, .feature .wrap { grid-template-columns: 1fr; gap: 44px; }
+    .feature.flip .copy { order: 0; }
+    .hero { padding-top: 36px; }
+    .stage { height: 560px; max-width: 520px; width: 100%; margin-inline: auto; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .nav-links a:not(.btn) { display: none; }
+    section.feature { padding: 64px 0; }
+    .band { padding: 64px 0; border-radius: 32px; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .grid { grid-template-columns: 1fr; }
+    .stage { height: 470px; }
+    .stage .phone.p-main { width: 210px; }
+    .stage .p-left, .stage .p-right { width: 160px; top: 80px; }
+    .stage .p-left { left: -2%; }
+    .stage .p-right { right: -2%; }
+    .chip { font-size: 13px; padding: 9px 12px; }
+    .chip small { font-size: 11px; }
+    .chip .ic { width: 28px; height: 28px; border-radius: 9px; }
+    .c1 { left: 0; top: 10px; }
+    .c2 { right: 0; top: auto; bottom: 110px; }
+    .c3 { left: 0; bottom: 14px; }
+    .duo { gap: 12px; }
+    .duo .phone { width: 47%; border-radius: 30px; padding: 6px; }
+    .duo .phone img { border-radius: 25px; }
+    .duo .phone:nth-child(2) { margin-top: 40px; }
+    .solo .phone { width: 72%; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/icon.png" alt="">WeekEats</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#together">Plan together</a>
+      <a href="#new">What's new</a>
+      <a class="btn small" href="https://apps.apple.com/app/id6448211124">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="pill reveal"><b>NEW</b> The all-new WeekEats, rebuilt from scratch</span>
+      <h1 class="reveal">Your whole week of meals, planned in <em>minutes.</em></h1>
+      <p class="lede reveal">Write the dishes you always cook. WeekEats spreads them across your week, finds every ingredient, adds a photo and writes your shopping list. Then share it all with the people you cook with.</p>
+      <div class="cta-row reveal">
+        <a class="btn" href="https://apps.apple.com/app/id6448211124">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1Zm-7 15a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
+          Download on the App Store
+        </a>
+        <a class="link" href="#new">See everything that's new</a>
+      </div>
+      <div class="meals reveal">
+        <span><i class="dot" style="background:var(--honey)"></i>Breakfast</span>
+        <span><i class="dot" style="background:var(--sage)"></i>Lunch</span>
+        <span><i class="dot" style="background:var(--terracotta)"></i>Dinner</span>
+        <span><i class="dot" style="background:var(--plum)"></i>Snack</span>
+      </div>
+    </div>
+
+    <div class="stage reveal" aria-label="WeekEats screens">
+      <div class="blob"></div>
+      <div class="phone p-left"><img src="assets/06-shopping-list.jpg" alt="Shopping list grouped by aisle"></div>
+      <div class="phone p-right"><img src="assets/03-your-weeks.jpg" alt="Saved weeks"></div>
+      <div class="phone p-main"><img src="assets/01-week-day.jpg" alt="A day in WeekEats with breakfast, lunch, dinner and a snack"></div>
+
+      <div class="chip c1">
+        <span class="ic" style="background:var(--honey)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 9-9m3-6 .9 2.1L20 7l-2.1.9L17 10l-.9-2.1L14 7l2.1-.9z"/></svg></span>
+        <span>Plan my week<small>One tap, seven days</small></span>
+      </div>
+      <div class="chip c2">
+        <span class="ic" style="background:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg></span>
+        <span>34 items to buy<small>Sorted by aisle</small></span>
+      </div>
+      <div class="chip c3">
+        <span class="ic" style="background:var(--terracotta)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></span>
+        <span>Emma &amp; Leo<small>Share this week</small></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="steps-head">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--orange)"></i>How it works</span>
+      <h2 class="reveal">From “what's for dinner?” to a full fridge in three steps.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal">
+        <i class="bar" style="background:var(--honey)"></i>
+        <span class="num">1</span>
+        <h3>Tell it what you cook</h3>
+        <p>Just type the names of your usual dishes, or pick from a catalog of ideas. No recipes to copy, no forms to fill in.</p>
+      </div>
+      <div class="step reveal">
+        <i class="bar" style="background:var(--sage)"></i>
+        <span class="num">2</span>
+        <h3>Tap “Plan my week”</h3>
+        <p>WeekEats spreads your dishes across lunch and dinner, so no two days look the same. Move anything with a tap.</p>
+      </div>
+      <div class="step reveal">
+        <i class="bar" style="background:var(--terracotta)"></i>
+        <span class="num">3</span>
+        <h3>Go shopping</h3>
+        <p>Your shopping list is already written: every ingredient, quantities added up, grouped by aisle. Ready to share.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--sage)"></i>Your week</span>
+      <h2 class="reveal">See your week the way you like it.</h2>
+      <p class="lede reveal">Swipe day by day on a beautiful board, or see the whole week at a glance in a simple list. Your choice, one tap away.</p>
+      <ul class="points reveal">
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Real life, not a template.</b> A soup and a main for lunch? Breakfast only at the weekend? Add as many dishes and meals as each day needs.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Colour for every meal.</b> Breakfast, lunch, dinner and snack each have their own colour, so the day reads in a second.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>No dates to manage.</b> A week is just Monday to Sunday, ready to reuse whenever you want.</span></li>
+      </ul>
+    </div>
+    <div class="duo reveal">
+      <div class="phone"><img src="assets/01-week-day.jpg" alt="Day view" loading="lazy"></div>
+      <div class="phone"><img src="assets/02-week-list.jpg" alt="Week list view" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="feature flip">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--honey)"></i>Shopping list</span>
+      <h2 class="reveal">A shopping list that writes itself.</h2>
+      <p class="lede reveal">Plan the week and the list is done. Change a dish and the list follows. You never type “onions” again.</p>
+      <ul class="points reveal">
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Quantities added up</b> across every dish of the week, in grams, units or cloves.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Grouped by aisle</b>, so you walk the supermarket once.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Knows why you need it:</b> each item shows the dishes it's for. Add anything else by hand.</span></li>
+      </ul>
+    </div>
+    <div class="solo reveal">
+      <div class="phone"><img src="assets/06-shopping-list.jpg" alt="Shopping list" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="together">
+  <div class="glow"></div>
+  <div class="feature" style="padding:0">
+    <div class="wrap">
+      <div class="copy">
+        <span class="eyebrow reveal"><i class="dot" style="background:var(--terracotta)"></i>New · Plan together</span>
+        <h2 class="reveal">One kitchen. <em>One week.</em> Everyone on the same page.</h2>
+        <p class="lede reveal">Invite your partner, your family or your flatmates. You all see the same week, the same dishes and the same shopping list, and every change shows up for everyone right away.</p>
+        <ul class="points reveal">
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#FFD166" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Invite with a 6-letter code.</b> Send it by any app; they type it and they're in.</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#FFD166" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Up to 4 people per home</b>, everyone can plan and tick things off the list.</span></li>
+          <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#FFD166" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Whoever's at the shop</b> sees what's already been bought. No more double yoghurt.</span></li>
+        </ul>
+        <div class="faces reveal">
+          <i class="av" style="background:var(--orange)">E</i><i class="av" style="background:#6FA86B">L</i><i class="av" style="background:#9B7FD1">S</i>
+          <span>Same week, same list, in real time.</span>
+        </div>
+      </div>
+      <div class="duo reveal">
+        <div class="phone"><img src="assets/04-your-home.jpg" alt="Your home: people sharing the week" loading="lazy"></div>
+        <div class="phone"><img src="assets/05-invite.jpg" alt="Invitation code" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--plum)"></i>New · Saved weeks</span>
+      <h2 class="reveal">Keep the weeks that worked.</h2>
+      <p class="lede reveal">A light week, a summer week, a training week… Save as many as you like and switch between them in one tap. The shopping list follows the week you pick.</p>
+      <ul class="points reveal">
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Start empty or from a copy</b> of a week you already have.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>See each week at a glance</b>: its dishes, and which days are planned.</span></li>
+      </ul>
+    </div>
+    <div class="solo reveal">
+      <div class="phone"><img src="assets/03-your-weeks.jpg" alt="Your weeks" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="feature flip">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--orange)"></i>Dishes</span>
+      <h2 class="reveal">Type a name. Get the whole dish.</h2>
+      <p class="lede reveal">Write “chickpea curry” and WeekEats brings the ingredients, the quantities and a photo. Ask for the steps whenever you're ready to cook.</p>
+      <ul class="points reveal">
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Your way.</b> “With tofu, no aubergine”: tell it how you make it and the recipe adapts.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Ideas when you're stuck</b>, from a catalog of dishes with photos, filtered for vegan or vegetarian homes.</span></li>
+        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#F36F21" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span><span><b>Prefer your own recipe?</b> Write it yourself; it's yours to edit any time.</span></li>
+      </ul>
+    </div>
+    <div class="duo reveal">
+      <div class="phone"><img src="assets/07-dishes.jpg" alt="Your dishes" loading="lazy"></div>
+      <div class="phone"><img src="assets/08-dish-detail.jpg" alt="Dish detail with photo and ingredients" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="new" id="new">
+  <div class="wrap">
+    <div class="new-head">
+      <span class="eyebrow reveal"><i class="dot" style="background:var(--orange)"></i>What's new</span>
+      <h2 class="reveal">Rebuilt from the ground up.</h2>
+      <p class="lede reveal">This isn't an update, it's a new WeekEats: new design, new engine and new ways to plan with the people you live with.</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <span class="ic" style="background:var(--honey)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9c0-.6-.5-1-1-1h-3a2 2 0 0 1-2-2V6c0-.6-.4-1-1-1-.4 0-1-.6-2-2Z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="8.5" cy="15.5" r="1"/></svg></span>
+        <h3>A brand-new design</h3>
+        <p>Warm, calm and made for iOS: food photos front and centre, a colour for every meal.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 19 9-9m3-6 .9 2.1L20 7l-2.1.9L17 10l-.9-2.1L14 7l2.1-.9z"/></svg></span>
+        <h3>Plan my week</h3>
+        <p>Tell it what you usually cook and get a varied week in a couple of taps.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--terracotta)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 15-4-4-8 8"/></svg></span>
+        <h3>Dishes with photos</h3>
+        <p>Ingredients, quantities and a photo arrive on their own. Steps on demand.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--plum)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg></span>
+        <h3>Automatic shopping list</h3>
+        <p>Quantities added up and grouped by aisle. Bought items stay ticked for everyone.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--terracotta)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></span>
+        <h3>Share your home</h3>
+        <p>Up to 4 people plan the same week and shop from the same list, in real time.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--plum)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="13" height="16" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></svg></span>
+        <h3>Saved weeks</h3>
+        <p>Keep several weeks and swap between them in one tap.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 16-9 0 12-4 16-9 16Z"/><path d="M4 20c4-4 7-6 10-8"/></svg></span>
+        <h3>For every kind of home</h3>
+        <p>Vegan and vegetarian homes get ideas and new dishes that match how they eat.</p>
+      </div>
+      <div class="card reveal">
+        <span class="ic" style="background:var(--honey)"><svg viewBox="0 0 24 24" fill="none" stroke="#2A1A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></span>
+        <h3>Your recipes come along</h3>
+        <p>Updating from the previous WeekEats? Your recipes and planners move over to the new app.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <img class="icon reveal" src="assets/icon.png" alt="WeekEats app icon">
+    <h2 class="reveal">Stop asking “what's for dinner?”</h2>
+    <p class="lede reveal">Plan your week once, shop once, and enjoy it together.</p>
+    <a class="btn reveal" href="https://apps.apple.com/app/id6448211124">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1Zm-7 15a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
+      Download on the App Store
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 WeekEats</span>
+    <span>Made with care for people who cook at home.</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add('in'));
+  }
+</script>
+</body>
+</html>
